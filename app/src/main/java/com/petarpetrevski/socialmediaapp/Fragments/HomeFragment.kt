@@ -1,4 +1,4 @@
-package Fragments
+package com.petarpetrevski.socialmediaapp.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
