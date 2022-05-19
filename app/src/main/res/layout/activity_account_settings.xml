@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AccountSettingsActivity">
+    tools:context=".AccountSettingsActivity"
+    android:background="@android:color/white">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:outlineProvider="none">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/profile_toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@android:color/white"
-            android:layout_marginTop="4dp"
             android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="6dp"
+            android:background="@android:color/white">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -36,23 +38,21 @@
                     android:id="@+id/profile_info_text_profile_fragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/close_profile_info_button"
                     android:text="Edit profile"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_toRightOf="@+id/close_profile_info_button"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                />
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/save_profile_info_button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginRight="15dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/save_edited_info"
-                />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/save_edited_info" />
 
             </RelativeLayout>
 

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1080921044098",
+    "project_id": "socialmediaapp-4e61a",
+    "storage_bucket": "socialmediaapp-4e61a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080921044098:android:2ca4e744f2dee90ecfb09b",
+        "android_client_info": {
+          "package_name": "com.petarpetrevski.socialmediaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080921044098-purhu1kirh631gfgm031unkntsclttr3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRcW0TjthS-wLEaWuIzkOUkniZOxq936M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080921044098-purhu1kirh631gfgm031unkntsclttr3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

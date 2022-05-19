@@ -2,12 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.petarpetrevski.socialmediaapp.Fragments.HomeFragment">
+    tools:context="com.petarpetrevski.socialmediaapp.Fragments.HomeFragment"
+    android:background="@android:color/white">
     
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!-- android:outlineProvider="none"-->
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/home_toolbar"

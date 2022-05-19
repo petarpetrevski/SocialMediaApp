@@ -2,13 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.petarpetrevski.socialmediaapp.Fragments.ProfileFragment">
+    tools:context="com.petarpetrevski.socialmediaapp.Fragments.ProfileFragment"
+    android:background="@android:color/white">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout_profile_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:outlineProvider="none">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/profile_toolbar"
@@ -30,7 +32,7 @@
                     android:maxLines="1"
                     android:text="username"
                     android:textColor="@android:color/black"
-                    android:textSize="18dp"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
 
                 <ImageView
