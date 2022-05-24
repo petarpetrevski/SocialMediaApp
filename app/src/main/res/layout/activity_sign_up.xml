@@ -29,7 +29,7 @@
         android:padding="10dp" />
 
     <EditText
-        android:id="@+id/username_sing_up"
+        android:id="@+id/username_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/full_name_sing_up"
@@ -41,12 +41,12 @@
         android:padding="10dp" />
 
     <EditText
-        android:id="@+id/email_sing_up"
+        android:id="@+id/email_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/inputs_background"
         android:padding="10dp"
-        android:layout_below="@+id/username_sing_up"
+        android:layout_below="@+id/username_sign_up"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="6dp"
         android:inputType="textEmailAddress"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/inputs_background"
         android:padding="10dp"
-        android:layout_below="@+id/email_sing_up"
+        android:layout_below="@+id/email_sign_up"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="6dp"
         android:inputType="textPassword"

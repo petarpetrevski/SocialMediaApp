@@ -1,19 +1,15 @@
 package com.petarpetrevski.socialmediaapp
 
 import android.app.ProgressDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputFilter.AllCaps
+import android.text.Spanned
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -29,14 +25,29 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         sign_up_button.setOnClickListener {
-            CreateAccount()
+            CreateFirestoreAccount()
+            // CreateRealtimeAccount()
         }
-    }
 
+        username_sign_up.setFilters(arrayOf<InputFilter>(
+            object : AllCaps() {
+                override fun filter(
+                    source: CharSequence,
+                    start: Int,
+                    end: Int,
+                    dest: Spanned,
+                    dstart: Int,
+                    dend: Int
+                ): CharSequence {
+                    return source.toString().toLowerCase().replace(" ", "")
+                }
+            }
+        ))
+    }
 
     /*
 
-    private fun CreateAccount() {
+    private fun CreateRealtimeAccount() {
         val fullName = full_name_sing_up.text.toString()
         val userName = username_sing_up.text.toString()
         val email = email_sing_up.text.toString()
@@ -60,7 +71,7 @@ class SignUpActivity : AppCompatActivity() {
                 mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener{ task ->
                         if (task.isSuccessful) {
-                            saveUserInfo(fullName, userName, email, progressDialog)
+                            saveUserInfoRealtime(fullName, userName, email, progressDialog)
                         } else {
                             val errorMessage = task.exception!!.toString()
                             Toast.makeText(this, "Error:  $errorMessage", Toast.LENGTH_LONG)
@@ -72,15 +83,16 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserInfo(fullName: String, userName: String, email: String, progressDialog: ProgressDialog) {
+    private fun saveUserInfoRealtime(fullName: String, userName: String, email: String, progressDialog: ProgressDialog) {
         val currentUserID = FirebaseAuth.getInstance().currentUser!!.uid
-        val usersRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
+        Log.d(TAG, "CURRENT USER ID: $currentUserID")
+        val usersRef = Firebase.database.getReference("Users")
 
         val userMap = HashMap<String, Any>()
         userMap["uid"] = currentUserID
-        userMap["fullname"] = currentUserID
-        userMap["username"] = currentUserID
-        userMap["email"] = currentUserID
+        userMap["fullname"] = fullName
+        userMap["username"] = userName
+        userMap["email"] = email
         userMap["bio"] = "test"
         userMap["image"] = "https://firebasestorage.googleapis.com/v0/b/socialmediaapp-4e61a.appspot.com/o/Default%20Images%2Fprofile.png?alt=media&token=4ff557a8-4d95-474c-8df0-818616dac64d"
 
@@ -103,15 +115,16 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
 
-    */
 
-    private fun CreateAccount() {
+     */
+
+    private fun CreateFirestoreAccount() {
 
         val db = Firebase.firestore
 
         val fullName = full_name_sing_up.text.toString()
-        val userName = username_sing_up.text.toString()
-        val email = email_sing_up.text.toString()
+        val userName = username_sign_up.text.toString()
+        val email = email_sign_up.text.toString()
         val password = password_sign_up.text.toString()
 
         when {
@@ -132,7 +145,7 @@ class SignUpActivity : AppCompatActivity() {
                 mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener{ task ->
                         if (task.isSuccessful) {
-                            saveUserInfo(fullName, userName, email, progressDialog)
+                            saveUserInfoFirestore(fullName, userName, email, progressDialog)
                         } else {
                             val errorMessage = task.exception!!.toString()
                             Toast.makeText(this, "Error:  $errorMessage", Toast.LENGTH_LONG).show()
@@ -144,7 +157,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserInfo(fullName: String, userName: String, email: String, progressDialog: ProgressDialog) {
+    private fun saveUserInfoFirestore(fullName: String, userName: String, email: String, progressDialog: ProgressDialog) {
         val db = Firebase.firestore
 
         val currentUserID = FirebaseAuth.getInstance().currentUser!!.uid
