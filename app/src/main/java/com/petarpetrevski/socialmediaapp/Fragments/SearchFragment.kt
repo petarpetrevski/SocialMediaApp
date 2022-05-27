@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.*
 import com.petarpetrevski.socialmediaapp.Adapter.UserAdapter
 import com.petarpetrevski.socialmediaapp.Model.User

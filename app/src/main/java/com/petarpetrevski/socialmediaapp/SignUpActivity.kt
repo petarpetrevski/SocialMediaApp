@@ -1,15 +1,19 @@
 package com.petarpetrevski.socialmediaapp
 
 import android.app.ProgressDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.AllCaps
 import android.text.Spanned
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -44,13 +48,10 @@ class SignUpActivity : AppCompatActivity() {
             }
         ))
     }
-
-    /*
-
     private fun CreateRealtimeAccount() {
         val fullName = full_name_sing_up.text.toString()
-        val userName = username_sing_up.text.toString()
-        val email = email_sing_up.text.toString()
+        val userName = username_sign_up.text.toString()
+        val email = email_sign_up.text.toString()
         val password = password_sign_up.text.toString()
 
         when {
@@ -71,6 +72,7 @@ class SignUpActivity : AppCompatActivity() {
                 mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener{ task ->
                         if (task.isSuccessful) {
+                            Log.d(TAG, "PERO PROBA TASK TO CREATE USER AUTH SUCCESSFUL")
                             saveUserInfoRealtime(fullName, userName, email, progressDialog)
                         } else {
                             val errorMessage = task.exception!!.toString()
@@ -86,7 +88,8 @@ class SignUpActivity : AppCompatActivity() {
     private fun saveUserInfoRealtime(fullName: String, userName: String, email: String, progressDialog: ProgressDialog) {
         val currentUserID = FirebaseAuth.getInstance().currentUser!!.uid
         Log.d(TAG, "CURRENT USER ID: $currentUserID")
-        val usersRef = Firebase.database.getReference("Users")
+        val db = FirebaseDatabase.getInstance("https://socialmediaapp-4e61a-default-rtdb.europe-west1.firebasedatabase.app")
+        val usersRef = db.getReference("Users")
 
         val userMap = HashMap<String, Any>()
         userMap["uid"] = currentUserID
@@ -114,9 +117,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
     }
-
-
-     */
 
     private fun CreateFirestoreAccount() {
 
