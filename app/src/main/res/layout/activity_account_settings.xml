@@ -69,6 +69,18 @@
         android:layout_marginTop="15dp"
         android:src="@drawable/profile" />
 
+
+<!--    <Button-->
+<!--        android:id="@+id/change_image_text_button"-->
+<!--        android:layout_width="170dp"-->
+<!--        android:layout_height="32dp"-->
+<!--        android:layout_below="@+id/profile_info_image_profile_fragment"-->
+<!--        android:text="Change Profile Photo"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:background="@drawable/buttons_background"/>-->
+
     <TextView
         android:id="@+id/change_image_text_button"
         android:layout_width="wrap_content"
@@ -76,6 +88,7 @@
         android:layout_below="@+id/profile_info_image_profile_fragment"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:paddingVertical="10dp"
         android:text="Change Profile Photo"
         android:textColor="@color/purple_500"
         android:textSize="16sp"
