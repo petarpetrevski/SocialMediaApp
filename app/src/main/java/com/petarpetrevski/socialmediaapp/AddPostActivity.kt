@@ -39,7 +39,7 @@ class AddPostActivity : AppCompatActivity() {
         save_add_post_button.setOnClickListener { uploadImage() }
 
         CropImage.activity()
-            .setAspectRatio(2,1)
+            .setAspectRatio(1,1)
             .start(this@AddPostActivity)
 
     }

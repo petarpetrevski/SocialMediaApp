@@ -105,6 +105,11 @@ class SignUpActivity : AppCompatActivity() {
                     progressDialog.dismiss()
                     Toast.makeText(this, "Account created successfully.", Toast.LENGTH_LONG)
 
+                    db.reference
+                        .child("Follow").child(currentUserID)
+                        .child("Following").child(currentUserID)
+                        .setValue(true)
+
                     val intent = Intent(this@SignUpActivity, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -159,6 +164,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun saveUserInfoFirestore(fullName: String, userName: String, email: String, progressDialog: ProgressDialog) {
         val db = Firebase.firestore
+        val dbRealtime = FirebaseDatabase.getInstance("https://socialmediaapp-4e61a-default-rtdb.europe-west1.firebasedatabase.app")
 
         val currentUserID = FirebaseAuth.getInstance().currentUser!!.uid
         // val usersRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
@@ -177,6 +183,11 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     progressDialog.dismiss()
                     Toast.makeText(this, "Account created successfully.", Toast.LENGTH_LONG).show()
+
+                    dbRealtime.reference
+                        .child("Follow").child(currentUserID)
+                        .child("Following").child(currentUserID)
+                        .setValue(true)
 
                     val intent = Intent(this@SignUpActivity, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
