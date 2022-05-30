@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.petarpetrevski.socialmediaapp.CommentsActivity
 import com.petarpetrevski.socialmediaapp.MainActivity
 import com.petarpetrevski.socialmediaapp.Model.Post
 import com.petarpetrevski.socialmediaapp.Model.User
@@ -57,20 +58,20 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
         if (post.getDescription().equals("")) {
 
-            holder.description.visibility == View.GONE
+            holder.description.visibility = View.GONE
 
         } else {
 
-            holder.description.visibility == View.VISIBLE
+            holder.description.visibility = View.VISIBLE
             holder.description.text = post.getDescription()
 
         }
 
         publisherInfo(holder.profileImage, holder.userName, holder.publisher, post.getPublisher())
+        isLiked(post.getPostid(), holder.likeButton)
+        numberOfLikes(holder.likes, post.getPostid())
+        numberOfComments(holder.comments, post.getPostid())
 
-        isLikes(post.getPostid(), holder.likeButton)
-
-        numberOflikes(holder.likes, post.getPostid())
 
         holder.likeButton.setOnClickListener {
 
@@ -95,13 +96,31 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
             }
 
-            numberOflikes(holder.likes, post.getPostid())
+//            numberOfLikes(holder.likes, post.getPostid())
+
+        }
+
+        holder.commentButton.setOnClickListener {
+
+            val intentComment = Intent(mContext, CommentsActivity::class.java)
+            intentComment.putExtra("postID", post.getPostid())
+            intentComment.putExtra("publisherID", post.getPublisher())
+            mContext.startActivity(intentComment)
+
+        }
+
+        holder.comments.setOnClickListener {
+
+            val intentComment = Intent(mContext, CommentsActivity::class.java)
+            intentComment.putExtra("postID", post.getPostid())
+            intentComment.putExtra("publisherID", post.getPublisher())
+            mContext.startActivity(intentComment)
 
         }
 
     }
 
-    private fun numberOflikes(likes: TextView, postid: String) {
+    private fun numberOfLikes(likes: TextView, postid: String) {
 
         val likesRef = database.reference
             .child("Likes")
@@ -139,7 +158,45 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
     }
 
-    private fun isLikes(postid: String, likeButton: ImageView) {
+    private fun numberOfComments(comments: TextView, postid: String) {
+
+        val commentsRef = database.reference
+            .child("Comments")
+            .child(postid)
+
+        commentsRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists() && snapshot.childrenCount.toInt() == 1) {
+
+                    comments.visibility = View.VISIBLE
+                    comments.text = "View " + snapshot.childrenCount.toString() + " comment"
+
+                } else if (snapshot.exists()) {
+
+                    comments.visibility = View.VISIBLE
+                    comments.text = "View all " + snapshot.childrenCount.toString() + " comments"
+
+                } else {
+
+                    comments.visibility = View.GONE
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+
+
+            }
+
+        })
+
+    }
+
+    private fun isLiked(postid: String, likeButton: ImageView) {
 
         val firebaseUser = FirebaseAuth.getInstance().currentUser
 
