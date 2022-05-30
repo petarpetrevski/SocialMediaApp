@@ -87,9 +87,9 @@ class HomeFragment : Fragment() {
 
     private fun retrievePosts() {
 
-        val fpostsRef = database.reference.child("Posts")
+        val postRef = database.reference.child("Posts")
 
-        fpostsRef.addValueEventListener(object : ValueEventListener {
+        postRef.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
 

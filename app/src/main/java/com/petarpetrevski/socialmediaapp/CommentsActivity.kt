@@ -5,17 +5,25 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.petarpetrevski.socialmediaapp.Adapter.CommentAdapter
+import com.petarpetrevski.socialmediaapp.Model.Post
 import com.petarpetrevski.socialmediaapp.Model.User
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_account_settings.*
 import kotlinx.android.synthetic.main.activity_comments.*
+import org.w3c.dom.Comment
 
 class CommentsActivity : AppCompatActivity() {
 
@@ -23,6 +31,8 @@ class CommentsActivity : AppCompatActivity() {
     private var publisherID = ""
     private var firebaseUser: FirebaseUser? = null
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance("https://socialmediaapp-4e61a-default-rtdb.europe-west1.firebasedatabase.app")
+    private var commentAdapter: CommentAdapter? = null
+    private var commentList: MutableList<com.petarpetrevski.socialmediaapp.Model.Comment>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,7 +45,20 @@ class CommentsActivity : AppCompatActivity() {
 
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
+        var recyclerView: RecyclerView
+        recyclerView = findViewById(R.id.recycler_view_comments)
+        val linearLayoutManager = LinearLayoutManager(this)
+//        linearLayoutManager.reverseLayout = true
+//        linearLayoutManager.stackFromEnd = true
+        recyclerView.layoutManager = linearLayoutManager
+
+        commentList = ArrayList()
+        commentAdapter = CommentAdapter(this, commentList)
+        recyclerView.adapter = commentAdapter
+
         userInfo()
+        retrieveComments()
+        retrievePostImage()
 
         post_comment_text.setOnClickListener(View.OnClickListener {
 
@@ -93,6 +116,65 @@ class CommentsActivity : AppCompatActivity() {
 
     }
 
+    private fun retrievePostImage() {
 
+        val postRef = database.reference.child("Posts").child(postID!!).child("postimage")
+
+        postRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+
+                    val image = snapshot.value.toString()
+
+                    Picasso.get().load(image).placeholder(R.drawable.profile).into(post_image_comments)
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
+
+    private fun retrieveComments() {
+
+        val commentsRef = database.reference
+            .child("Comments")
+            .child(postID)
+
+        commentsRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+
+                    commentList!!.clear()
+
+                    for (snapshot in snapshot.children) {
+
+                        val comment = snapshot.getValue(com.petarpetrevski.socialmediaapp.Model.Comment::class.java)
+                        commentList!!.add(comment!!)
+
+                    }
+
+                    commentAdapter!!.notifyDataSetChanged()
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
 
 }
