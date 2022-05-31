@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -15,12 +18,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.*
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.ktx.toObject
 import com.petarpetrevski.socialmediaapp.AccountSettingsActivity
+import com.petarpetrevski.socialmediaapp.Adapter.UserPostsAdapter
+import com.petarpetrevski.socialmediaapp.Model.Post
 import com.petarpetrevski.socialmediaapp.Model.User
 import com.petarpetrevski.socialmediaapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProfileFragment : Fragment() {
 
@@ -28,6 +36,9 @@ class ProfileFragment : Fragment() {
     private lateinit var profileID: String
     private lateinit var firebaseUser: FirebaseUser
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance("https://socialmediaapp-4e61a-default-rtdb.europe-west1.firebasedatabase.app")
+
+    var postList: List<Post>? = null
+    var userPostsAdapter: UserPostsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +63,18 @@ class ProfileFragment : Fragment() {
             checkFollowAndFollowingButtonStatus()
 
         }
+
+
+        var recyclerViewUploadedImages: RecyclerView
+        recyclerViewUploadedImages = view.findViewById(R.id.recycler_view_uploaded_images)
+        recyclerViewUploadedImages.setHasFixedSize(true)
+        val linearLayoutManager: LinearLayoutManager = GridLayoutManager(context, 3)
+        recyclerViewUploadedImages.layoutManager = linearLayoutManager
+
+        postList = ArrayList()
+        userPostsAdapter = context?.let { UserPostsAdapter(it, postList as ArrayList<Post>) }
+        recyclerViewUploadedImages.adapter = userPostsAdapter
+
 
         view.edit_account_settings_button.setOnClickListener{
 //            startActivity(Intent(context, AccountSettingsActivity::class.java))
@@ -101,6 +124,7 @@ class ProfileFragment : Fragment() {
         getFollowers()
         getFollowings()
         userInfo()
+        userPosts()
 
         return view
     }
@@ -169,6 +193,47 @@ class ProfileFragment : Fragment() {
             }
         })
     }
+
+
+    private fun userPosts() {
+
+        val postRef = database.reference.child("Posts")
+
+        postRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+
+                    (postList as ArrayList<Post>).clear()
+
+                    for (snapshot in snapshot.children) {
+
+                        val post = snapshot.getValue(Post::class.java)!!
+
+                        if (post.getPublisher().equals(profileID)) {
+
+                            (postList as ArrayList<Post>).add(post)
+
+                        }
+
+                        Collections.reverse(postList)
+                        userPostsAdapter!!.notifyDataSetChanged()
+
+                    }
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
+
 
     private fun userInfo() {
 //        val usersRef = database.getReference().child("Users").child(profileID)
