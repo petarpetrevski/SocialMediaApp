@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.ListAdapter
 import android.widget.TextView
 import androidx.annotation.NonNull
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.petarpetrevski.socialmediaapp.CommentsActivity
+import com.petarpetrevski.socialmediaapp.Fragments.ProfileFragment
 import com.petarpetrevski.socialmediaapp.MainActivity
 import com.petarpetrevski.socialmediaapp.Model.Post
 import com.petarpetrevski.socialmediaapp.Model.User
@@ -115,6 +117,39 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
             intentComment.putExtra("postID", post.getPostid())
             intentComment.putExtra("publisherID", post.getPublisher())
             mContext.startActivity(intentComment)
+
+        }
+
+        holder.profileImage.setOnClickListener {
+
+            val pref = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
+            pref.putString("profileID", post.getPublisher())
+            pref.apply()
+
+            (mContext as FragmentActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ProfileFragment()).commit()
+
+        }
+
+        holder.publisher.setOnClickListener {
+
+            val pref = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
+            pref.putString("profileID", post.getPublisher())
+            pref.apply()
+
+            (mContext as FragmentActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ProfileFragment()).commit()
+
+        }
+
+        holder.userName.setOnClickListener {
+
+            val pref = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
+            pref.putString("profileID", post.getPublisher())
+            pref.apply()
+
+            (mContext as FragmentActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ProfileFragment()).commit()
 
         }
 

@@ -233,8 +233,8 @@
                 android:orientation="horizontal"
                 android:background="@drawable/button_black_background"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginBottom="10dp">
 
                 <ImageButton
                     android:id="@+id/images_grid_view_button"
