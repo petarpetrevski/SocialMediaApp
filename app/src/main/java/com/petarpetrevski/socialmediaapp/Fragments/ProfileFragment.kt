@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +42,10 @@ class ProfileFragment : Fragment() {
     var postList: List<Post>? = null
     var userPostsAdapter: UserPostsAdapter? = null
 
+    var collectionList: List<Post>? = null
+    var userCollectionsAdapter: UserPostsAdapter? = null
+    var userCollectionPostsList: List<String>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,15 +71,49 @@ class ProfileFragment : Fragment() {
         }
 
 
-        var recyclerViewUploadedImages: RecyclerView
-        recyclerViewUploadedImages = view.findViewById(R.id.recycler_view_uploaded_images)
-        recyclerViewUploadedImages.setHasFixedSize(true)
+        // Recycler View for Uploaded Posts
+        var recyclerViewUploadedPosts: RecyclerView
+        recyclerViewUploadedPosts = view.findViewById(R.id.recycler_view_uploaded_posts)
+        recyclerViewUploadedPosts.setHasFixedSize(true)
         val linearLayoutManager: LinearLayoutManager = GridLayoutManager(context, 3)
-        recyclerViewUploadedImages.layoutManager = linearLayoutManager
+        recyclerViewUploadedPosts.layoutManager = linearLayoutManager
 
         postList = ArrayList()
         userPostsAdapter = context?.let { UserPostsAdapter(it, postList as ArrayList<Post>) }
-        recyclerViewUploadedImages.adapter = userPostsAdapter
+        recyclerViewUploadedPosts.adapter = userPostsAdapter
+
+
+
+        // Recycler View for Saved Posts
+        var recyclerViewSavedPosts: RecyclerView
+        recyclerViewSavedPosts = view.findViewById(R.id.recycler_view_saved_posts)
+        recyclerViewSavedPosts.setHasFixedSize(true)
+        val linearLayoutManager2: LinearLayoutManager = GridLayoutManager(context, 3)
+        recyclerViewSavedPosts.layoutManager = linearLayoutManager2
+
+        collectionList = ArrayList()
+        userCollectionsAdapter = context?.let { UserPostsAdapter(it, collectionList as ArrayList<Post>) }
+        recyclerViewSavedPosts.adapter = userCollectionsAdapter
+
+
+        recyclerViewSavedPosts.visibility = View.GONE
+        recyclerViewUploadedPosts.visibility = View.VISIBLE
+
+
+        var uploadedPostsButton: ImageButton
+        uploadedPostsButton = view.findViewById(R.id.posts_grid_view_button)
+        uploadedPostsButton.setOnClickListener {
+            recyclerViewSavedPosts.visibility = View.GONE
+            recyclerViewUploadedPosts.visibility = View.VISIBLE
+        }
+
+        var savedPostsButton: ImageButton
+        savedPostsButton = view.findViewById(R.id.saved_posts_button)
+        savedPostsButton.setOnClickListener {
+            recyclerViewSavedPosts.visibility = View.VISIBLE
+            recyclerViewUploadedPosts.visibility = View.GONE
+        }
+
 
 
         view.edit_account_settings_button.setOnClickListener{
@@ -127,6 +166,7 @@ class ProfileFragment : Fragment() {
         userInfo()
         userPosts()
         getTotalNumberOfPosts()
+        userCollection()
 
         return view
     }
@@ -340,6 +380,83 @@ class ProfileFragment : Fragment() {
                     }
 
                     total_posts.text = postCounter.toString()
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
+
+    private fun userCollection() {
+
+        userCollectionPostsList = ArrayList()
+
+        val collectionRef = database.reference
+            .child("Collections")
+            .child(firebaseUser.uid)
+
+        collectionRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+
+                    for (snapshot in snapshot.children) {
+
+                        (userCollectionPostsList as ArrayList<String>).add(snapshot.key!!)
+
+                    }
+
+                    retrieveCollectionPostsData()
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
+
+    private fun retrieveCollectionPostsData() {
+
+        val postRef = database.reference.child("Posts")
+
+        postRef.addValueEventListener(object : ValueEventListener{
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+
+                    (collectionList as ArrayList<Post>).clear()
+
+                    for (snapshot in snapshot.children) {
+
+                        val post = snapshot.getValue(Post::class.java)
+
+                        for (key in userCollectionPostsList!!) {
+
+                            if (post!!.getPostid() == key) {
+
+                                (collectionList as ArrayList<Post>).add(post!!)
+                                (collectionList as ArrayList<Post>).reverse()
+
+                            }
+
+                        }
+
+                    }
+
+                    userCollectionsAdapter!!.notifyDataSetChanged()
 
                 }
 

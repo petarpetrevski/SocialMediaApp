@@ -237,7 +237,7 @@
                 android:layout_marginBottom="10dp">
 
                 <ImageButton
-                    android:id="@+id/images_grid_view_button"
+                    android:id="@+id/posts_grid_view_button"
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/grid"
@@ -248,7 +248,7 @@
                     style="?android:attr/buttonBarButtonStyle"/>
 
                 <ImageButton
-                    android:id="@+id/images_save_button"
+                    android:id="@+id/saved_posts_button"
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/save_large_icon"
@@ -262,14 +262,14 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_uploaded_images"
+                android:id="@+id/recycler_view_uploaded_posts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             </androidx.recyclerview.widget.RecyclerView>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_saved_images"
+                android:id="@+id/recycler_view_saved_posts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone">
