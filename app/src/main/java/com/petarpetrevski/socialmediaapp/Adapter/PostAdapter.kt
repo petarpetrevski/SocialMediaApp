@@ -73,6 +73,7 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
         isLiked(post.getPostid(), holder.likeButton)
         numberOfLikes(holder.likes, post.getPostid())
         numberOfComments(holder.comments, post.getPostid())
+        isSaved(post.getPostid(), holder.saveButton)
 
 
         holder.likeButton.setOnClickListener {
@@ -97,8 +98,6 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 //                mContext.startActivity(intent)
 
             }
-
-//            numberOfLikes(holder.likes, post.getPostid())
 
         }
 
@@ -150,6 +149,28 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
             (mContext as FragmentActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ProfileFragment()).commit()
+
+        }
+
+        holder.saveButton.setOnClickListener {
+
+            if (holder.saveButton.tag == "Save") {
+
+                database.reference
+                    .child("Collections")
+                    .child(firebaseUser!!.uid)
+                    .child(post.getPostid())
+                    .setValue(true)
+
+            } else {
+
+                database.reference
+                    .child("Collections")
+                    .child(firebaseUser!!.uid)
+                    .child(post.getPostid())
+                    .removeValue()
+
+            }
 
         }
 
@@ -315,6 +336,38 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
                     userName.text = user!!.getUsername()
                     publisher.text = user!!.getFullname()
                 }
+
+            }
+
+        })
+
+    }
+
+    private fun isSaved(postid: String, imageView: ImageView) {
+
+        val collectionsRef = database.reference
+            .child("Collections")
+            .child(firebaseUser!!.uid)
+
+        collectionsRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.child(postid).exists()) {
+
+                    imageView.setImageResource(R.drawable.save_large_icon)
+                    imageView.tag = "Saved"
+
+                } else {
+
+                    imageView.setImageResource(R.drawable.save_unfilled_large_icon)
+                    imageView.tag = "Save"
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
 
             }
 

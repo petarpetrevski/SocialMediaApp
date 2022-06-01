@@ -26,6 +26,7 @@ import com.petarpetrevski.socialmediaapp.Model.Post
 import com.petarpetrevski.socialmediaapp.Model.User
 import com.petarpetrevski.socialmediaapp.R
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -125,6 +126,7 @@ class ProfileFragment : Fragment() {
         getFollowings()
         userInfo()
         userPosts()
+        getTotalNumberOfPosts()
 
         return view
     }
@@ -311,6 +313,44 @@ class ProfileFragment : Fragment() {
         val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)?.edit()
         pref?.putString("profileID", firebaseUser.uid)
         pref?.apply()
+    }
+
+
+    private fun getTotalNumberOfPosts() {
+
+        val postRef = database.reference.child("Posts")
+
+        postRef.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+
+                    var postCounter = 0
+
+                    for (snapshot in snapshot.children) {
+
+                        var post = snapshot.getValue(Post::class.java)!!
+                        if (post.getPublisher() == profileID) {
+
+                            postCounter++
+
+                        }
+
+                    }
+
+                    total_posts.text = postCounter.toString()
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
     }
 
 

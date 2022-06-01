@@ -40,6 +40,7 @@ class AddPostActivity : AppCompatActivity() {
 
         CropImage.activity()
             .setAspectRatio(1,1)
+            .setRequestedSize(2048, 2048)
             .start(this@AddPostActivity)
 
     }
