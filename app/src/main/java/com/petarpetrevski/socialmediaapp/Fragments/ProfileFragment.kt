@@ -58,7 +58,9 @@ class ProfileFragment : Fragment() {
 
         val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
         if (pref != null) {
+
             this.profileID = pref.getString("profileID", "none").toString()
+
         }
 
         if (profileID == firebaseUser.uid) {
@@ -138,6 +140,7 @@ class ProfileFragment : Fragment() {
         }
 
 
+        // EDIT PROFILE OR FOLLOW BUTTON DEPENDING ON WHAT PROFILE IS OPEN
 
         view.edit_account_settings_button.setOnClickListener{
 //            startActivity(Intent(context, AccountSettingsActivity::class.java))
@@ -161,6 +164,9 @@ class ProfileFragment : Fragment() {
                             .child("Followers").child(it1.toString())
                             .setValue(true)
                     }
+
+                    addNotification()
+
                 }
 
                 getButtonText == "Following" -> {
@@ -490,6 +496,24 @@ class ProfileFragment : Fragment() {
             }
 
         })
+
+    }
+
+
+    private fun addNotification() {
+
+        val norificationRef = database.reference
+            .child("Notifications")
+            .child(profileID)
+
+        val notificationMap = HashMap<String, Any>()
+        notificationMap["userID"] = firebaseUser!!.uid
+        notificationMap["text"] = "started following you."
+        notificationMap["postID"] = ""
+        notificationMap["isPost"] = false
+
+        norificationRef.push().setValue(notificationMap)
+
 
     }
 

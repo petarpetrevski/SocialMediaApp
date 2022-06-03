@@ -32,6 +32,7 @@ import com.petarpetrevski.socialmediaapp.RetrieveUsersActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_account_settings.*
+import kotlinx.android.synthetic.main.activity_comments.*
 
 class PostAdapter(private val mContext: Context, private val mPost: List<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
@@ -86,6 +87,8 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
                     .child(post.getPostid())
                     .child(firebaseUser!!.uid)
                     .setValue(true)
+
+                addNotification(post.getPublisher(), post.getPostid())
 
             } else {
 
@@ -388,6 +391,23 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
             }
 
         })
+
+    }
+
+    private fun addNotification(userID: String, postID: String) {
+
+        val norificationRef = database.reference
+            .child("Notifications")
+            .child(userID)
+
+        val notificationMap = HashMap<String, Any>()
+        notificationMap["userID"] = firebaseUser!!.uid
+        notificationMap["text"] = "liked your post."
+        notificationMap["postID"] = postID
+        notificationMap["isPost"] = true
+
+        norificationRef.push().setValue(notificationMap)
+
 
     }
 
