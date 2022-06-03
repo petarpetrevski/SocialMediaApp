@@ -28,6 +28,7 @@ import com.petarpetrevski.socialmediaapp.MainActivity
 import com.petarpetrevski.socialmediaapp.Model.Post
 import com.petarpetrevski.socialmediaapp.Model.User
 import com.petarpetrevski.socialmediaapp.R
+import com.petarpetrevski.socialmediaapp.RetrieveUsersActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_account_settings.*
@@ -98,6 +99,17 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 //                mContext.startActivity(intent)
 
             }
+
+        }
+
+        holder.likes.setOnClickListener {
+
+
+            val intentLikes = Intent(mContext, RetrieveUsersActivity::class.java)
+
+            intentLikes.putExtra("id", post.getPostid())
+            intentLikes.putExtra("title", "likes")
+            mContext.startActivity(intentLikes)
 
         }
 
@@ -174,7 +186,11 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
         }
 
+
     }
+
+
+
 
     private fun numberOfLikes(likes: TextView, postid: String) {
 

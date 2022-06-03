@@ -26,6 +26,7 @@ import com.petarpetrevski.socialmediaapp.Adapter.UserPostsAdapter
 import com.petarpetrevski.socialmediaapp.Model.Post
 import com.petarpetrevski.socialmediaapp.Model.User
 import com.petarpetrevski.socialmediaapp.R
+import com.petarpetrevski.socialmediaapp.RetrieveUsersActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
@@ -112,6 +113,28 @@ class ProfileFragment : Fragment() {
         savedPostsButton.setOnClickListener {
             recyclerViewSavedPosts.visibility = View.VISIBLE
             recyclerViewUploadedPosts.visibility = View.GONE
+        }
+
+
+
+        view.layout_followers.setOnClickListener{
+
+            val intent = Intent(context, RetrieveUsersActivity::class.java)
+
+            intent.putExtra("id", profileID)
+            intent.putExtra("title", "followers")
+            startActivity(intent)
+
+        }
+
+        view.layout_followings.setOnClickListener{
+
+            val intent = Intent(context, RetrieveUsersActivity::class.java)
+
+            intent.putExtra("id", profileID)
+            intent.putExtra("title", "following")
+            startActivity(intent)
+
         }
 
 
@@ -316,9 +339,9 @@ class ProfileFragment : Fragment() {
                         val user = value.toObject(User::class.java)
 
                         Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into((view?.profile_image_profile_fragment))
-                        view?.profile_fragment_username?.text = user!!.getUsername()
-                        view?.full_name_profile_fragment?.text = user!!.getFullname()
-                        view?.bio_profile_fragment?.text = user!!.getBio()
+                        view?.profile_fragment_username?.text = user.getUsername()
+                        view?.full_name_profile_fragment?.text = user.getFullname()
+                        view?.bio_profile_fragment?.text = user.getBio()
                     }
 
                 }
