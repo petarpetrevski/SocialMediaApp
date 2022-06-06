@@ -158,6 +158,9 @@ class CommentsActivity : AppCompatActivity() {
 
                     commentList!!.clear()
 
+
+                    Log.d("TAG", "PERO TUKA VLEZE VO COMMENTS $snapshot")
+
                     for (snapshot in snapshot.children) {
 
                         val comment = snapshot.getValue(com.petarpetrevski.socialmediaapp.Model.Comment::class.java)

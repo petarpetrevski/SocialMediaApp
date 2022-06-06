@@ -23,6 +23,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.petarpetrevski.socialmediaapp.CommentsActivity
+import com.petarpetrevski.socialmediaapp.Fragments.PostDetailsFragment
 import com.petarpetrevski.socialmediaapp.Fragments.ProfileFragment
 import com.petarpetrevski.socialmediaapp.MainActivity
 import com.petarpetrevski.socialmediaapp.Model.Post
@@ -134,6 +135,21 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
         }
 
+        holder.postImage.setOnClickListener {
+
+            val editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
+
+            editor.putString("postID", post.getPostid())
+
+            editor.apply()
+
+            (mContext as FragmentActivity).supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, PostDetailsFragment())
+                .commit()
+
+        }
+
         holder.profileImage.setOnClickListener {
 
             val pref = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
@@ -153,7 +169,6 @@ class PostAdapter(private val mContext: Context, private val mPost: List<Post>) 
 
             (mContext as FragmentActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ProfileFragment()).commit()
-
         }
 
         holder.userName.setOnClickListener {

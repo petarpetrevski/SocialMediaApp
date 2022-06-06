@@ -177,6 +177,32 @@ class RetrieveUsersActivity : AppCompatActivity() {
 
     private fun retrieveViews() {
 
+        val ref = database.reference
+            .child("Stories")
+            .child(id)
+            .child(intent.getStringExtra("storyid")!!)
+            .child("views")
+
+        ref.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                (userIdList as ArrayList<String>).clear()
+
+                for (snapshot in snapshot.children) {
+
+                    (userIdList as ArrayList<String>).add(snapshot.key!!)
+
+                }
+
+                retrieveUserInfo()
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
     }
 
 

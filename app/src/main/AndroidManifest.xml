@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SocialMediaApp">
         <activity
+            android:name=".StoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddStoryActivity"
             android:exported="false" />
         <activity
