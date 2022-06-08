@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1080921044098-fuc8s7iuduhj5j2ko2l70kc8ihhcfg6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.petarpetrevski.socialmediaapp",
+            "certificate_hash": "f4e4f2a8055e358d64e02c7d87082443e9df69df"
+          }
+        },
+        {
           "client_id": "1080921044098-purhu1kirh631gfgm031unkntsclttr3.apps.googleusercontent.com",
           "client_type": 3
         }
