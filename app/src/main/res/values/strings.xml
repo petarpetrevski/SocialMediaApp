@@ -8,4 +8,11 @@
     <string name="bottom_nav_profile">Profile</string>
     <string name="search_hint">Search...</string>
     <string name="hello_blank_fragment">This is a blank fragment.</string>
+
+
+    <string name="facebook_app_id">1018022769103009</string>
+    <string name="fb_login_protocol_scheme">fb1018022769103009</string>
+    <string name="facebook_client_token">31316032540bd7f52e0afe17c85c24ff</string>
+
+
 </resources>

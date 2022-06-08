@@ -57,11 +57,47 @@
         android:id="@+id/sign_in_google_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sign_in_button"
+        android:layout_above="@+id/sign_in_fb_button"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         android:background="@android:color/white"
         android:text="Sign in with Google"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="17sp" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/sign_in_facebook_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_in_google_button"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"
+        android:textSize="17sp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/sign_in_fb_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sign_up_link_button"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="6dp"
+        android:background="@android:color/white"
+        android:text="Sign in with Facebook"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="17sp" />
+
+    <Button
+        android:id="@+id/sign_in_guest_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sign_in_google_button"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="6dp"
+        android:background="@android:color/white"
+        android:text="Sign in as Guest"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:textSize="17sp" />
